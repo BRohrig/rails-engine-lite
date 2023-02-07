@@ -36,6 +36,8 @@ RSpec.describe "items API" do
 
     expect(response).to be_successful
 
+    expect(item_data[:data]).to have_key(:id)
+    expect(item_data[:data][:id]).to eq(id.to_s)
     expect(item_data[:data][:attributes]).to have_key(:name)
     expect(item_data[:data][:attributes][:name]).to be_a(String)
     expect(item_data[:data][:attributes]).to have_key(:description)
@@ -43,6 +45,6 @@ RSpec.describe "items API" do
     expect(item_data[:data][:attributes]).to have_key(:unit_price)
     expect(item_data[:data][:attributes][:unit_price]).to be_a(Float)
     expect(item_data[:data][:attributes]).to have_key(:merchant_id)
-    expect(item_data[:data][:attributes][:merchant_id]).to eq(id.to_s)
+    expect(item_data[:data][:attributes][:merchant_id]).to eq(@merchant.id)
   end
 end
