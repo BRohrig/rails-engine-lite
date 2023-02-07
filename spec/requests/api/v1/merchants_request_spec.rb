@@ -8,12 +8,12 @@ RSpec.describe "merchants API" do
 
     expect(response).to be_successful
 
-    merchants = JSON.parse(response.body, symbolize_names: true)
-    expect(merchants.count).to eq(10)
+    merchants_data = JSON.parse(response.body, symbolize_names: true)
+    expect(merchants_data[:data].count).to eq(10)
 
-    merchants.each do |merchant|
-      expect(merchant).to have_key(:name)
-      expect(merchant[:name]).to be_a(String)
+    merchants_data[:data].each do |merchant|
+      expect(merchant[:attributes]).to have_key(:name)
+      expect(merchant[:attributes][:name]).to be_a(String)
     end
   end
 
@@ -22,13 +22,13 @@ RSpec.describe "merchants API" do
 
     get "/api/v1/merchants/#{id}"
 
-    merchant = JSON.parse(response.body, symbolize_names: true)
+    merchant_data = JSON.parse(response.body, symbolize_names: true)
 
     expect(response).to be_successful
 
-    expect(merchant).to have_key(:name)
-    expect(merchant[:name]).to be_a(String)
-    expect(merchant[:id]).to eq(id)
+    expect(merchant_data[:data][:attributes]).to have_key(:name)
+    expect(merchant_data[:data][:attributes][:name]).to be_a(String)
+    expect(merchant_data[:data][:id]).to eq(id.to_s)
 
 
   end
