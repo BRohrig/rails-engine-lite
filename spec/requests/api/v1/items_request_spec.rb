@@ -65,6 +65,29 @@ RSpec.describe "items API" do
     expect(created_item.description).to eq("Crows Love this Item")
     expect(created_item.unit_price).to eq(3.2)
     expect(created_item.merchant_id).to eq(@merchant.id)
+  end
+
+  it 'can edit an existing item' do
+    id = create(:item, merchant_id: @merchant.id)
+    old_name = Item.last.name
+    change_params = {
+                      name: "Dull Thing", 
+                      description: "this is much more boring", 
+                      unit_price: 0.1
+                    }
+    headers = {"CONTENT_TYPE" => "application/json"}
+
+    patch "/api/v1/items/#{id}", headers: headers, params: JSON.generate(item: change_params)
+    item = Item.find_by(id: id)
+
+    expect(response).to be_successful
+    expect(item.name).to_not eq("Shiny Thing")
+    expect(item.name).to eq("Dull Thing")
+    expect(item.description).to_not eq("Crows Love this Item")
+    expect(item.description).to eq("this is much more boring")
+    expect(item.unit_price).to_not eq(3.2)
+    expect(item.unit_price).to eq(0.1)
+  
 
   end
 end
