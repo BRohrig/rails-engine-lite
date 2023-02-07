@@ -128,6 +128,6 @@ RSpec.describe "items API" do
     delete "/api/v1/items/#{item.id}"
 
     expect(response).to be_successful
-    expect{Invoice.find(invoice.id)}.to eq(invoice)
+    expect(Invoice.find(invoice.id)).to eq(invoice)
   end
 end
