@@ -14,5 +14,7 @@ RSpec.describe "merchant find API endpoint" do
     expect(merchant_data[:data][:attributes][:name]).to eq("Happy Muffin World")
   end
 
+  
+
 
 end
