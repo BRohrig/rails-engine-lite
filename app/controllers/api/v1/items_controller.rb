@@ -8,11 +8,13 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def create
-    render json: Item.create(item_params)
+    render(status: 201, json: ItemSerializer.new(Item.create(item_params)))
   end
 
   def update
-    render json: Item.update(update_params)
+    item = Item.find(params[:id])
+    item.update!(item_params)
+    render json: ItemSerializer.new(item)
   end
 
   private
@@ -20,9 +22,4 @@ class Api::V1::ItemsController < ApplicationController
   def item_params
     params.require(:item).permit(:name, :description, :unit_price, :merchant_id)
   end
-
-  def update_params
-    params.require(:item).permit(:name, :description, :unit_price)
-  end
-
 end

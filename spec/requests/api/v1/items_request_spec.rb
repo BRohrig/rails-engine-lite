@@ -69,11 +69,12 @@ RSpec.describe "items API" do
 
   it 'can edit an existing item' do
     id = create(:item, merchant_id: @merchant.id).id
-    old_name = Item.last.name
+    @merchant2 = create(:merchant)
     change_params = {
                       name: "Dull Thing", 
                       description: "this is much more boring", 
-                      unit_price: 0.1
+                      unit_price: 0.1,
+                      merchant_id: @merchant2.id
                     }
     headers = {"CONTENT_TYPE" => "application/json"}
 
@@ -87,6 +88,8 @@ RSpec.describe "items API" do
     expect(item.description).to eq("this is much more boring")
     expect(item.unit_price).to_not eq(3.2)
     expect(item.unit_price).to eq(0.1)
+    expect(item.merchant_id).to_not eq(@merchant.id)
+    expect(item.merchant_id).to eq(@merchant2.id)
   
 
   end
