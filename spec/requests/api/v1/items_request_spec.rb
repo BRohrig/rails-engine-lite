@@ -90,7 +90,18 @@ RSpec.describe "items API" do
     expect(item.unit_price).to eq(0.1)
     expect(item.merchant_id).to_not eq(@merchant.id)
     expect(item.merchant_id).to eq(@merchant2.id)
-  
+  end
+
+  it 'can destroy an item in the database' do
+    item = create(:item, merchant_id: @merchant.id)
+
+    expect(Item.count).to eq(1)
+
+    delete "/api/v1/items/#{item.id}"
+
+    expect(response).to be_successful
+    expect(Item.count).to eq(0)
+    expect(Item.find(item.id)).to raise_error(ActiveRecord::RecordNotFound)
 
   end
 end
