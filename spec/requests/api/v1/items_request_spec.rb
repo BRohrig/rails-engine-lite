@@ -57,7 +57,7 @@ RSpec.describe "items API" do
                   })
     headers = {"CONTENT_TYPE" => "application/json"}
 
-    post "/api/v1/books", headers: headers, params: JSON.generate(item: item_params)
+    post "/api/v1/items", headers: headers, params: JSON.generate(item: item_params)
     created_item = Item.last
 
     expect(response).to be_successful
