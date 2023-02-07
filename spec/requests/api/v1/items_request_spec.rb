@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "items API" do
   it "sends a list of items" do
-    create_list(:item, 10)
+    @merchant = create(:merchant)
+    create_list(:item, 10, merchant_id: @merchant.id)
 
     get "/api/v1/items"
 
@@ -21,4 +22,5 @@ RSpec.describe "items API" do
       expect(item[:attributes]).to have_key(:merchant_id)
       expect(item[:attributes][:merchant_id]).to be_a(Integer)
     end
+  end
 end
