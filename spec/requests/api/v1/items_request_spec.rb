@@ -99,8 +99,35 @@ RSpec.describe "items API" do
 
     delete "/api/v1/items/#{item.id}"
 
-    expect(response).to be_successful
+    expect(response.body).to eq("")
+    expect(response.code).to eq("204")
     expect(Item.count).to eq(0)
     expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'can delete an invoice if it is the only item on that invoice' do
+    item = create(:item, merchant_id: @merchant.id)
+    customer = create(:customer)
+    invoice = create(:invoice, customer_id: customer.id)
+    ii = create(:invoice_item, invoice_id: invoice.id, item_id: item.id)
+
+    delete "/api/v1/items/#{item.id}"
+
+    expect(response).to be_successful
+    expect{Invoice.find(invoice.id)}.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'will not delete the invoice if other items exist on that invoice' do
+    item = create(:item, merchant_id: @merchant.id)
+    item2 = create(:item, merchant_id: @merchant.id)
+    customer = create(:customer)
+    invoice = create(:invoice, customer_id: customer.id)
+    ii = create(:invoice_item, invoice_id: invoice.id, item_id: item.id)
+    ii2 = create(:invoice_item, invoice_id: invoice.id, item_id: item2.id)
+
+    delete "/api/v1/items/#{item.id}"
+
+    expect(response).to be_successful
+    expect{Invoice.find(invoice.id)}.to eq(invoice)
   end
 end
