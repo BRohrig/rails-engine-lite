@@ -68,7 +68,7 @@ RSpec.describe "items API" do
   end
 
   it 'can edit an existing item' do
-    id = create(:item, merchant_id: @merchant.id)
+    id = create(:item, merchant_id: @merchant.id).id
     old_name = Item.last.name
     change_params = {
                       name: "Dull Thing", 
