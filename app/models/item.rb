@@ -6,9 +6,7 @@ class Item < ApplicationRecord
 
   def invoice_delete
     invoices.each do |invoice|
-      if invoice.items.include?(self) && invoice.items.distinct.count == 1
-        Invoice.destroy(invoice.id)
-      end
+      Invoice.destroy(invoice.id) if invoice.items.include?(self) && invoice.items.distinct.count == 1
     end
   end
 end
