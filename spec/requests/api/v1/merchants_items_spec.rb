@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe "merchant items API" do
-  it "can find all items associated with a merchant" do
+RSpec.describe 'merchant items API' do
+  it 'can find all items associated with a merchant' do
     create_list(:merchant, 3)
     5.times do
       create(:item, merchant_id: Merchant.first.id)
@@ -31,8 +31,5 @@ RSpec.describe "merchant items API" do
       expect(item[:attributes]).to have_key(:merchant_id)
       expect(item[:attributes][:merchant_id]).to eq(Merchant.first.id)
     end
-
   end
-
-
 end
