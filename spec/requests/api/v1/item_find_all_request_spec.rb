@@ -61,4 +61,12 @@ RSpec.describe 'item find_all search endpoint' do
     expect(item_data[:data][2][:attributes][:name]).to eq('cheesebread')
     expect(item_data[:data].count).to eq(3)
   end
+
+  it 'returns a 400 error if invalid parameters are input' do
+    get '/api/v1/items/find_all?min_price=5&max_price=6.9&name=cheese'
+
+    expect(response.status).to eq(400)
+
+
+  end
 end

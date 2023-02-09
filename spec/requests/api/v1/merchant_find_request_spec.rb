@@ -38,4 +38,13 @@ RSpec.describe 'merchant find API endpoint' do
     expect(data).to have_key(:data)
     expect(data[:data]).to eq({})
   end
+
+  it 'returns a 404 error when no name param is passed' do
+    get '/api/v1/merchants/find?name='
+
+    expect(response.status).to eq(400)
+    error_return = JSON.parse(response.body, symbolize_names: true)
+    expect(error_return).to have_key(:error)
+
+  end
 end
