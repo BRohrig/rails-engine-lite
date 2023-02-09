@@ -130,4 +130,12 @@ RSpec.describe 'items API' do
     expect(response).to be_successful
     expect(Invoice.find(invoice.id)).to eq(invoice)
   end
+
+  it 'will return a 404 error message if the user attempts to delete a nonexistent item' do
+    delete "/api/v1/items/0"
+
+    expect(response.status).to eq(404)
+
+
+  end
 end
