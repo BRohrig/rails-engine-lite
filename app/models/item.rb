@@ -11,7 +11,7 @@ class Item < ApplicationRecord
   end
 
   def self.search(name: nil, min_price: nil, max_price: nil)
-    if name != '' && !name.nil? && min_price.nil? && max_price.nil?
+    if name != '' && name.present? && min_price.nil? && max_price.nil?
       Item.find_by_name_fragment(name)
     elsif (min_price.to_f.positive? || max_price.to_f.positive?) && name.nil?
       Item.find_by_price(min_price: min_price, max_price: max_price)
