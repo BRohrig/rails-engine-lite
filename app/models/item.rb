@@ -27,8 +27,8 @@ class Item < ApplicationRecord
   end
 
   def self.find_by_price(min_price: nil, max_price: nil)
-    !min_price.nil? ? @min_price = min_price : @min_price = 0
-    !max_price.nil? ? @max_price = max_price : @max_price = 9999999
+    min_price.present? ? @min_price = min_price : @min_price = 0
+    max_price.present? ? @max_price = max_price : @max_price = 9999999
     Item.where("unit_price BETWEEN #{@min_price} AND #{@max_price}")
   end
 end
