@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'merchant find API endpoint' do
@@ -45,6 +47,5 @@ RSpec.describe 'merchant find API endpoint' do
     expect(response.status).to eq(400)
     error_return = JSON.parse(response.body, symbolize_names: true)
     expect(error_return).to have_key(:error)
-
   end
 end

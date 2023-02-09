@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'items API' do
@@ -132,10 +134,8 @@ RSpec.describe 'items API' do
   end
 
   it 'will return a 404 error message if the user attempts to delete a nonexistent item' do
-    delete "/api/v1/items/0"
+    delete '/api/v1/items/0'
 
     expect(response.status).to eq(404)
-
-
   end
 end
