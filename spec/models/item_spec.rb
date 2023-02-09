@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Item, type: :model do
-  it {should belong_to(:merchant)}
-  it {should have_many(:invoice_items)}
-  it {should have_many(:invoices).through(:invoice_items)}
-  it {should have_many(:customers).through(:invoices)}
+  it { should belong_to(:merchant) }
+  it { should have_many(:invoice_items) }
+  it { should have_many(:invoices).through(:invoice_items) }
+  it { should have_many(:customers).through(:invoices) }
 
   it 'has a method to delete the associated invoice if that invoice only has that item on it' do
     @merchant = create(:merchant)
@@ -16,20 +18,20 @@ RSpec.describe Item, type: :model do
 
     expect(Invoice.find(@invoice.id)).to eq(@invoice)
     @item.invoice_delete
-    expect{Invoice.find(@invoice.id)}.to raise_error(ActiveRecord::RecordNotFound)
+    expect { Invoice.find(@invoice.id) }.to raise_error(ActiveRecord::RecordNotFound)
   end
 
   it 'has a class method to search instances of itself my a name fragment, case insensitive, alphabetically' do
     @merchant = create(:merchant)
-    @item = create(:item, merchant_id: @merchant.id, name: "fuzzy wuzzy")
-    @item2 = create(:item, merchant_id: @merchant.id, name: "wuzfuzz")
-    @item3 = create(:item, merchant_id: @merchant.id, name: "fuzzzzzz")
+    @item = create(:item, merchant_id: @merchant.id, name: 'fuzzy wuzzy')
+    @item2 = create(:item, merchant_id: @merchant.id, name: 'wuzfuzz')
+    @item3 = create(:item, merchant_id: @merchant.id, name: 'fuzzzzzz')
 
-    expect(Item.find_by_name_fragment("fuzz")).to eq([@item, @item3, @item2])
-    expect(Item.find_by_name_fragment("FuzZ")).to eq([@item, @item3, @item2])
-    expect(Item.find_by_name_fragment("zZy")).to eq([@item])
-    expect(Item.find_by_name_fragment("wuz")).to eq([@item, @item2])
-    expect(Item.find_by_name_fragment("ZZzZ")).to eq([@item3])
+    expect(Item.find_by_name_fragment('fuzz')).to eq([@item, @item3, @item2])
+    expect(Item.find_by_name_fragment('FuzZ')).to eq([@item, @item3, @item2])
+    expect(Item.find_by_name_fragment('zZy')).to eq([@item])
+    expect(Item.find_by_name_fragment('wuz')).to eq([@item, @item2])
+    expect(Item.find_by_name_fragment('ZZzZ')).to eq([@item3])
   end
 
   it 'has a class method to search instances of itself by two price parameters' do
@@ -44,7 +46,5 @@ RSpec.describe Item, type: :model do
     expect(Item.find_by_price(min_price: 2.4)).to eq([@item3, @item4, @item5])
     expect(Item.find_by_price(max_price: 2.4)).to eq([@item, @item2])
     expect(Item.find_by_price(min_price: 2.4, max_price: 2.55)).to eq([@item3])
-    
-    
   end
 end
