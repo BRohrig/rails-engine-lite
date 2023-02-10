@@ -21,8 +21,8 @@ module Api
 
       def destroy
         item = Item.find(params[:id])
-        item.invoice_delete
         item.destroy
+        item.invoice_delete
       end
 
       private
