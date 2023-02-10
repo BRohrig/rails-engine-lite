@@ -5,9 +5,9 @@ class Item < ApplicationRecord
   has_many :customers, through: :invoices
 
   def invoice_delete
-    invoices.each do |invoice|
-      Invoice.destroy(invoice.id) if invoice.items.include?(self) && invoice.items.distinct.count == 1
-    end
+   Invoice.left_joins(:invoice_items)
+          .group(:id)
+          .having("COUNT(invoice_items.id) = 0").destroy_all
   end
 
   def self.search(name: nil, min_price: nil, max_price: nil)

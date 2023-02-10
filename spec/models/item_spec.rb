@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 RSpec.describe Item, type: :model do
@@ -14,11 +12,16 @@ RSpec.describe Item, type: :model do
     @item2 = create(:item, merchant_id: @merchant.id)
     @customer = create(:customer)
     @invoice = create(:invoice, customer_id: @customer.id)
+    @invoice2 = create(:invoice, customer_id: @customer.id)
     @ii = create(:invoice_item, invoice_id: @invoice.id, item_id: @item.id)
+    @ii2 = create(:invoice_item, invoice_id: @invoice2.id, item_id: @item.id)
+    @ii3 = create(:invoice_item, invoice_id: @invoice2.id, item_id: @item2.id)
 
     expect(Invoice.find(@invoice.id)).to eq(@invoice)
+    @item.destroy
     @item.invoice_delete
     expect { Invoice.find(@invoice.id) }.to raise_error(ActiveRecord::RecordNotFound)
+    expect(Invoice.find(@invoice2.id)).to eq(@invoice2)
   end
 
   it 'has a class method to search instances of itself my a name fragment, case insensitive, alphabetically' do
